@@ -22,6 +22,6 @@ public class Board extends BaseEntity{
     private String content;
 
     // 연관관계 지정
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
     private Member writer;
 }

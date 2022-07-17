@@ -7,7 +7,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.test.context.event.annotation.AfterTestClass;
+
+import javax.transaction.Transactional;
+import java.util.Arrays;
+import java.util.List;
+
+
 
 @SpringBootTest
 class BoardRepositoryTest {
@@ -33,4 +44,48 @@ class BoardRepositoryTest {
         }
 
     }
+
+    @Test
+    @DisplayName("목록 화면 처리 보드 랑이터")
+    void testReadWriter(){
+        Object result = boardRepository.getBoardWriter(100L);
+
+        Object[] arr = (Object[])result;
+
+        System.out.println("===========================================");
+        System.out.println("arr = " + Arrays.toString(arr));
+    }
+
+
+    @Test
+    @DisplayName("목록 화면 처리 댓글 보드")
+    @Transactional
+    void testGetBoardWithReply(){
+        List<Object[]> result = boardRepository.getBoardWithRply(3L);
+        for (Object[] arr : result) {
+            System.out.println(Arrays.toString(arr));
+        }
+    }
+
+    @Test
+    @DisplayName("댓글 카운트")
+    void testReplyCount(){
+
+        Pageable pageable = PageRequest.of(0,10, Sort.by("bno").descending());
+
+        Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
+
+        result.get().forEach(row -> {
+            Object[] arr = (Object[]) row;
+            System.out.println(Arrays.toString(arr));
+        }  );
+    }
+
+    @Test
+    public void testRead(){
+        Object result = boardRepository.getBoardByBno(100L);
+        Object[] arr = (Object[]) result;
+        System.out.println(Arrays.toString(arr));
+    }
+
 }
