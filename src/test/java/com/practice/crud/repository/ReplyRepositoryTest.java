@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.repository.query.Param;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
@@ -33,6 +34,12 @@ class ReplyRepositoryTest {
             repository.save(reply);
 
         }
+    }
+    @Test
+    @DisplayName("댓글 삭제 테스트")
+    void testRemove(){
+        Long bno = 10L;
+        repository.delteByBno(@Param("10l"));
     }
 
 
